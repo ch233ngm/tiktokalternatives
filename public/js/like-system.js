@@ -58,15 +58,19 @@ class LikeSystem {
     // 更新渲染方法
     renderApps(apps, container) {
         const sortedApps = this.sortByLikes(apps);
-        container.empty(); // 清空现有内容
+        container.empty();
         
         sortedApps.forEach(app => {
             const card = `
-                <div class="app-card rounded-lg p-6 shadow-sm folded-corner neon-glow">
+                <div class="app-card rounded-lg p-6 shadow-sm folded-corner neon-glow card-loading">
                     <div class="decorative-line decorative-line-top"></div>
                     <div class="diagonal-line"></div>
                     <div class="flex items-center mb-4">
-                        <img src="${app.ico}" alt="${app.name}" class="w-12 h-12 rounded-lg mr-4">
+                        <img src="${app.ico}" 
+                             alt="${app.name}" 
+                             class="w-12 h-12 rounded-lg mr-4"
+                             onload="this.style.opacity='1'"
+                             style="opacity: 0; transition: opacity 0.3s ease">
                         <div>
                             <h3 class="text-xl font-semibold">${app.name}</h3>
                             <span class="tag">${app.tag}</span>
@@ -95,6 +99,11 @@ class LikeSystem {
         sortedApps.forEach(app => {
             this.updateLikeDisplay(app.name);
         });
+
+        // 添加加载完成的类
+        setTimeout(() => {
+            container.find('.app-card').addClass('loaded');
+        }, sortedApps.length * 100 + 200);
     }
 
     // 点赞动作
