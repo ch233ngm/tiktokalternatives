@@ -124,16 +124,21 @@ class LikeSystem {
             });
 
             const data = await response.json();
+            const oldLikes = this.getLikes(appName);
             this.likeStates.set(appName, data.likes);
 
+            // 只更新当前按钮的状态和点赞数
             likeButton.classList.add('liked');
             this.createLikeEffect(likeButton);
+            const likeCount = likeButton.querySelector('.like-count');
+            likeCount.textContent = this.formatLikeCount(data.likes);
 
-            // 获取所有应用并重新排序
-            const alternativesList = $('#alternatives-list');
+            // 检查是否需要重新排序
             const apps = window.alternativesData?.alternatives || [];
-            if (apps.length > 0) {
-                this.renderApps(apps, alternativesList);
+            const needsReorder = this.checkIfNeedsReorder(appName, oldLikes, data.likes, apps);
+            
+            if (needsReorder) {
+                this.smoothReorder();
             }
 
         } catch (error) {
@@ -141,6 +146,72 @@ class LikeSystem {
         } finally {
             likeButton.classList.remove('liking');
         }
+    }
+
+    // 修改检查是否需要重新排序的方法
+    checkIfNeedsReorder(changedAppName, oldLikes, newLikes, apps) {
+        const appIndex = apps.findIndex(app => app.name === changedAppName);
+        if (appIndex === -1) return false;
+
+        // 计算旧排序
+        const oldState = new Map(this.likeStates);
+        oldState.set(changedAppName, oldLikes);
+        const getOldLikes = (name) => oldState.get(name) || 0;
+        
+        const oldSortedApps = [...apps].sort((a, b) => {
+            const likesA = getOldLikes(a.name);
+            const likesB = getOldLikes(b.name);
+            return likesB - likesA;
+        });
+
+        // 计算新排序
+        const newSortedApps = this.sortByLikes(apps);
+
+        // 比较位置是否发生变化
+        const oldPosition = oldSortedApps.findIndex(app => app.name === changedAppName);
+        const newPosition = newSortedApps.findIndex(app => app.name === changedAppName);
+
+        return oldPosition !== newPosition;
+    }
+
+    // 如果需要平滑重排序，可以添加这个方法
+    smoothReorder() {
+        const alternativesList = $('#alternatives-list');
+        const cards = alternativesList.children().get();
+        const apps = window.alternativesData?.alternatives || [];
+        
+        // 获取所有卡片当前位置
+        const originalPositions = cards.map(card => $(card).offset());
+        
+        // 对卡片进行排序
+        const sortedApps = this.sortByLikes(apps);
+        const sortedCards = sortedApps.map(app => 
+            cards.find(card => $(card).find('[data-app-name]').data('app-name') === app.name)
+        );
+        
+        // 设置卡片的绝对位置
+        cards.forEach((card, i) => {
+            $(card).css({
+                position: 'absolute',
+                top: originalPositions[i].top,
+                left: originalPositions[i].left,
+                width: $(card).width()
+            });
+        });
+        
+        // 重新排序DOM
+        sortedCards.forEach(card => alternativesList.append(card));
+        
+        // 触发重排后，添加过渡动画
+        requestAnimationFrame(() => {
+            alternativesList.children().css({
+                transition: 'all 0.5s ease',
+                position: 'relative',
+                top: 'auto',
+                left: 'auto',
+                width: 'auto'
+            });
+        });
     }
 
     // 格式化点赞数

@@ -20,6 +20,13 @@
       "tag": "Music Focus",
       "description": "AI-powered music video app that automatically edits videos to the beat of songs.",
       "ico": "/public/icos/triller.png"
+    },
+    {
+      "name": "RedNote",
+      "tag": "Lifestyle & Fashion",
+      "description": "Lifestyle sharing platform with unique note-style format, popular for fashion and creative content.",
+      "url": "https://www.xiaohongshu.com/explore",
+      "ico": "/public/icos/rednote.png"
     }
   ]
 }
