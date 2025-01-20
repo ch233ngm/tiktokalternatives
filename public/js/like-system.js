@@ -153,6 +153,9 @@ class LikeSystem {
         const appIndex = apps.findIndex(app => app.name === changedAppName);
         if (appIndex === -1) return false;
 
+        // 如果点赞数相等，不需要重排序
+        if (oldLikes === newLikes) return false;
+
         // 计算旧排序
         const oldState = new Map(this.likeStates);
         oldState.set(changedAppName, oldLikes);
