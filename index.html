@@ -122,6 +122,46 @@
         .try-now-btn {
             position: relative;
             overflow: hidden;
+            color: #fff;
+            padding: 8px 24px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .try-now-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(139, 92, 246, 0.5),
+                rgba(192, 38, 211, 0.5),
+                transparent
+            );
+            transform: scaleX(0.7);
+            transition: all 0.3s ease;
+        }
+
+        .try-now-btn:hover {
+            transform: translateY(-2px);
+            text-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+        }
+
+        .try-now-btn:hover::after {
+            transform: scaleX(1);
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(139, 92, 246, 0.8),
+                rgba(192, 38, 211, 0.8),
+                transparent
+            );
         }
 
         .try-now-btn::before {
@@ -131,7 +171,12 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(139, 92, 246, 0.2),
+                transparent
+            );
             transform: rotate(45deg);
             animation: shimmer 3s infinite;
             opacity: 0;
@@ -399,6 +444,110 @@
         body {
             background: #0a0a0a;
         }
+
+        /* 更新点赞按钮样式 */
+        .like-button {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 16px;
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: visible;
+            color: #9ca3af;
+        }
+
+        .like-button:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .like-button.liked {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: rgba(139, 92, 246, 0.3);
+            color: #C026D3;
+        }
+
+        .like-button.liking {
+            transform: scale(0.95) translateY(0);
+        }
+
+        .like-icon {
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #8B5CF6, #C026D3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.7;
+        }
+
+        .liked .like-icon {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 1.2em;
+            pointer-events: none;
+            animation: floatHeart 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            z-index: 10;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) scale(0.5) rotate(-10deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-30px) scale(1.2) rotate(10deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-60px) scale(0.8) rotate(-10deg);
+                opacity: 0;
+            }
+        }
+
+        .like-count {
+            min-width: 24px;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .liked .like-count {
+            color: #C026D3;
+        }
+
+        /* 更新卡片底部布局 */
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(139, 92, 246, 0.1);
+            gap: 1rem;
+        }
+
+        /* 确保按钮在移动端也能保持良好布局 */
+        @media (max-width: 640px) {
+            .card-footer {
+                flex-direction: row;
+                gap: 0.75rem;
+            }
+            
+            .try-now-btn {
+                padding: 8px 20px;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -453,6 +602,8 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
+    <script src="/public/js/like-system.js"></script>
+
     <script>
         $(document).ready(function() {
             $.getJSON('alternatives.json', function(data) {
@@ -471,14 +622,25 @@
                                 </div>
                             </div>
                             <p class="text-gray-600 mb-4">${app.description}</p>
-                            <a href="${app.url}" target="_blank" 
-                               class="try-now-btn inline-block">
-                                Try Now
-                            </a>
-                            <div class="decorative-line decorative-line-bottom"></div>
+                            <div class="card-footer">
+                                <a href="${app.url}" target="_blank" 
+                                   class="try-now-btn">
+                                    Try Now
+                                </a>
+                                <button class="like-button" onclick="likeSystem.toggleLike('${app.name}', this)">
+                                    <span class="like-icon">♥</span>
+                                    <span class="like-count">0</span>
+                                </button>
+                            </div>
                         </div>
                     `;
                     alternativesList.append(card);
+                });
+
+                // 初始化点赞数显示
+                data.alternatives.forEach(app => {
+                    const likeCount = document.querySelector(`[onclick="likeSystem.toggleLike('${app.name}', this)"] .like-count`);
+                    likeCount.textContent = likeSystem.formatLikeCount(likeSystem.getLikes(app.name));
                 });
 
                 // 添加鼠标跟随效果
