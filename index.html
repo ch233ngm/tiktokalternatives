@@ -204,7 +204,8 @@
         h1 span {
             background: linear-gradient(45deg, #8B5CF6 0%, #C026D3 100%);
             -webkit-background-clip: text;
-            color: transparent;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .intro-card {
@@ -626,44 +627,12 @@
             await likeSystem.initializeLikes();
             
             $.getJSON('alternatives.json', function(data) {
-                const alternativesList = $('#alternatives-list');
+                // 保存数据到全局变量，以便后续重新排序使用
+                window.alternativesData = data;
                 
-                data.alternatives.forEach(app => {
-                    const card = `
-                        <div class="app-card rounded-lg p-6 shadow-sm folded-corner neon-glow">
-                            <div class="decorative-line decorative-line-top"></div>
-                            <div class="diagonal-line"></div>
-                            <div class="flex items-center mb-4">
-                                <img src="${app.ico}" alt="${app.name}" class="w-12 h-12 rounded-lg mr-4">
-                                <div>
-                                    <h3 class="text-xl font-semibold">${app.name}</h3>
-                                    <span class="tag">${app.tag}</span>
-                                </div>
-                            </div>
-                            <p class="text-gray-600 mb-4">${app.description}</p>
-                            <div class="card-footer">
-                                <a href="${app.url}" target="_blank" 
-                                   class="try-now-btn">
-                                    Try Now
-                                </a>
-                                <button class="like-button" 
-                                        data-app-name="${app.name}" 
-                                        onclick="likeSystem.toggleLike('${app.name}', this)">
-                                    <span class="like-icon">♥</span>
-                                    <span class="like-count">
-                                        <span class="loading-dots">...</span>
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    alternativesList.append(card);
-                });
-
-                // 初始化完成后更新所有点赞数
-                data.alternatives.forEach(app => {
-                    likeSystem.updateLikeDisplay(app.name);
-                });
+                const alternativesList = $('#alternatives-list');
+                // 使用新的渲染方法
+                likeSystem.renderApps(data.alternatives, alternativesList);
 
                 // 添加鼠标跟随效果
                 $(document).mousemove(function(e) {

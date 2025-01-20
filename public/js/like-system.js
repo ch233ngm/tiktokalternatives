@@ -46,6 +46,57 @@ class LikeSystem {
         }
     }
 
+    // 添加排序方法
+    sortByLikes(apps) {
+        return [...apps].sort((a, b) => {
+            const likesA = this.getLikes(a.name);
+            const likesB = this.getLikes(b.name);
+            return likesB - likesA; // 降序排序
+        });
+    }
+
+    // 更新渲染方法
+    renderApps(apps, container) {
+        const sortedApps = this.sortByLikes(apps);
+        container.empty(); // 清空现有内容
+        
+        sortedApps.forEach(app => {
+            const card = `
+                <div class="app-card rounded-lg p-6 shadow-sm folded-corner neon-glow">
+                    <div class="decorative-line decorative-line-top"></div>
+                    <div class="diagonal-line"></div>
+                    <div class="flex items-center mb-4">
+                        <img src="${app.ico}" alt="${app.name}" class="w-12 h-12 rounded-lg mr-4">
+                        <div>
+                            <h3 class="text-xl font-semibold">${app.name}</h3>
+                            <span class="tag">${app.tag}</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">${app.description}</p>
+                    <div class="card-footer">
+                        <a href="${app.url}" target="_blank" class="try-now-btn">
+                            Try Now
+                        </a>
+                        <button class="like-button" 
+                                data-app-name="${app.name}" 
+                                onclick="likeSystem.toggleLike('${app.name}', this)">
+                            <span class="like-icon">♥</span>
+                            <span class="like-count">
+                                <span class="loading-dots">...</span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.append(card);
+        });
+
+        // 更新所有点赞数显示
+        sortedApps.forEach(app => {
+            this.updateLikeDisplay(app.name);
+        });
+    }
+
     // 点赞动作
     async toggleLike(appName, likeButton) {
         if (likeButton.classList.contains('liking')) {
@@ -69,8 +120,12 @@ class LikeSystem {
             likeButton.classList.add('liked');
             this.createLikeEffect(likeButton);
 
-            const likeCount = likeButton.querySelector('.like-count');
-            likeCount.textContent = this.formatLikeCount(this.getLikes(appName));
+            // 获取所有应用并重新排序
+            const alternativesList = $('#alternatives-list');
+            const apps = window.alternativesData?.alternatives || [];
+            if (apps.length > 0) {
+                this.renderApps(apps, alternativesList);
+            }
 
         } catch (error) {
             console.error('Error toggling like:', error);
