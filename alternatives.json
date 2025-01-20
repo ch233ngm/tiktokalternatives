@@ -34,6 +34,13 @@
       "tag": "Lifestyle & Photos",
       "description": "Photo-focused lifestyle platform featuring curated content for fashion, food and travel with high-quality visual storytelling.",
       "ico": "/public/icos/lemon8.png"
+    },
+    {
+      "name": "Likee",
+      "url": "https://likee.com/",
+      "tag": "Creative Video",
+      "description": "Global video platform with advanced effects and filters, focusing on creative expression and community engagement.",
+      "ico": "/public/icos/likee.png"
     }
   ]
 }
