@@ -1,0 +1,17 @@
+/* 点赞按钮样式 */
+.like-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 16px;
+    background: rgba(139, 92, 246, 0.05);
+    border: 1px solid rgba(139, 92, 246, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: visible;
+    color: #9ca3af;
+}
+
+/* ... 其他点赞相关样式 ... */ 

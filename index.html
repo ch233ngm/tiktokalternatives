@@ -20,6 +20,13 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/public/favico/favicon-16x16.png">
     <link rel="manifest" href="/public/favico/site.webmanifest">
     <link rel="shortcut icon" href="/public/favico/favicon.ico">
+    
+    <!-- CSS 文件 -->
+    <link href="/public/css/style.css" rel="stylesheet">
+    <link href="/public/css/card.css" rel="stylesheet">
+    <link href="/public/css/like-system.css" rel="stylesheet">
+    <link href="/public/css/animations.css" rel="stylesheet">
+    
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -638,49 +645,17 @@
         </div>
     </div>
 
-    <!-- jQuery -->
+    <!-- JS 文件 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
     <script src="/public/js/like-system.js"></script>
-
+    <script src="/public/js/cursor-effects.js"></script>
     <script>
         $(document).ready(async function() {
-            // 等待点赞系统初始化
             await likeSystem.initializeLikes();
-            
             $.getJSON('alternatives.json', function(data) {
-                // 保存数据到全局变量，以便后续重新排序使用
                 window.alternativesData = data;
-                
                 const alternativesList = $('#alternatives-list');
-                // 使用新的渲染方法
                 likeSystem.renderApps(data.alternatives, alternativesList);
-
-                // 添加鼠标跟随效果
-                $(document).mousemove(function(e) {
-                    $('.light-cursor').css({
-                        left: e.pageX,
-                        top: e.pageY,
-                        opacity: 1
-                    });
-                });
-
-                // 优化性能：添加防抖
-                let timeout;
-                $(document).mousemove(function(e) {
-                    clearTimeout(timeout);
-                    timeout = setTimeout(function() {
-                        $('.light-cursor').css({
-                            left: e.pageX,
-                            top: e.pageY,
-                            opacity: 1
-                        });
-                    }, 10);
-                });
-
-                $(document).mouseleave(function() {
-                    $('.light-cursor').css('opacity', 0);
-                });
             });
         });
     </script>
