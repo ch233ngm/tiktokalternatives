@@ -1,12 +1,14 @@
 class LikeSystem {
     constructor() {
-        this.apiBaseUrl = 'https://app-likes.ch233ngm.workers.dev';
+        this.apiBaseUrl = 'https://api.tiktokalternatives.org';
         this.likeStates = new Map();
-        this.initializeLikes();
+        this.initialized = false;
     }
 
     // 初始化点赞数据
     async initializeLikes() {
+        if (this.initialized) return true;
+        
         try {
             const response = await fetch(`${this.apiBaseUrl}/api/likes`);
             const data = await response.json();
@@ -15,6 +17,7 @@ class LikeSystem {
                 data.map(item => [item.name, item.likes])
             );
             
+            this.initialized = true;
             return true;
         } catch (error) {
             console.error('Error initializing likes:', error);
@@ -25,6 +28,22 @@ class LikeSystem {
     // 获取点赞数
     getLikes(appName) {
         return this.likeStates.get(appName) || 0;
+    }
+
+    // 更新显示的点赞数
+    updateLikeDisplay(appName) {
+        const likeButton = document.querySelector(`[data-app-name="${appName}"]`);
+        if (!likeButton) return;
+
+        const likeCount = likeButton.querySelector('.like-count');
+        if (!likeCount) return;
+
+        const count = this.getLikes(appName);
+        likeCount.textContent = this.formatLikeCount(count);
+        
+        if (count > 0) {
+            likeButton.classList.add('liked');
+        }
     }
 
     // 点赞动作

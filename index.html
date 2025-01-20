@@ -548,6 +548,22 @@
                 padding: 8px 20px;
             }
         }
+
+        .loading-dots {
+            display: inline-block;
+            animation: loadingDots 1.5s infinite;
+        }
+
+        @keyframes loadingDots {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        .like-button[disabled] {
+            opacity: 0.7;
+            cursor: wait;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -605,7 +621,10 @@
     <script src="/public/js/like-system.js"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(async function() {
+            // 等待点赞系统初始化
+            await likeSystem.initializeLikes();
+            
             $.getJSON('alternatives.json', function(data) {
                 const alternativesList = $('#alternatives-list');
                 
@@ -627,9 +646,13 @@
                                    class="try-now-btn">
                                     Try Now
                                 </a>
-                                <button class="like-button" onclick="likeSystem.toggleLike('${app.name}', this)">
+                                <button class="like-button" 
+                                        data-app-name="${app.name}" 
+                                        onclick="likeSystem.toggleLike('${app.name}', this)">
                                     <span class="like-icon">♥</span>
-                                    <span class="like-count">0</span>
+                                    <span class="like-count">
+                                        <span class="loading-dots">...</span>
+                                    </span>
                                 </button>
                             </div>
                         </div>
@@ -637,10 +660,9 @@
                     alternativesList.append(card);
                 });
 
-                // 初始化点赞数显示
+                // 初始化完成后更新所有点赞数
                 data.alternatives.forEach(app => {
-                    const likeCount = document.querySelector(`[onclick="likeSystem.toggleLike('${app.name}', this)"] .like-count`);
-                    likeCount.textContent = likeSystem.formatLikeCount(likeSystem.getLikes(app.name));
+                    likeSystem.updateLikeDisplay(app.name);
                 });
 
                 // 添加鼠标跟随效果
