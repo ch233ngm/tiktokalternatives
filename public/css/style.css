@@ -149,4 +149,28 @@ details[open] .faq-content {
     background: linear-gradient(45deg, #8B5CF6, #C026D3);
     -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L9 9H2L7 14L5 21L12 17L19 21L17 14L22 9H15L12 2Z'/%3E%3C/svg%3E") center/contain no-repeat;
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L9 9H2L7 14L5 21L12 17L19 21L17 14L22 9H15L12 2Z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* Footer 样式 */
+.footer-divider {
+    position: relative;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(139, 92, 246, 0.2),
+        transparent
+    );
+}
+
+footer {
+    position: relative;
+}
+
+footer p {
+    transition: color 0.3s ease;
+}
+
+footer p:hover {
+    color: rgba(139, 92, 246, 0.8);
 } 
