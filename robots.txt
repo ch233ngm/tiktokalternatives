@@ -1,0 +1,27 @@
+User-agent: *
+Allow: /
+Disallow: /alternatives.json
+Disallow: /public/js/
+Disallow: /public/css/
+Disallow: /public/favico/
+
+# Sitemap
+Sitemap: https://tiktokalternatives.org/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 10
+
+# Google specific
+User-agent: Googlebot
+Allow: /
+Disallow: /alternatives.json
+Crawl-delay: 5
+
+# Bing specific
+User-agent: Bingbot
+Allow: /
+Disallow: /alternatives.json
+Crawl-delay: 10
+
+# Host
+Host: https://tiktokalternatives.org 
