@@ -594,6 +594,60 @@
         .card-loading:nth-child(4) { animation-delay: 0.4s; }
         .card-loading:nth-child(5) { animation-delay: 0.5s; }
         .card-loading:nth-child(6) { animation-delay: 0.6s; }
+
+        /* FAQ 分隔设计 */
+        .faq-section {
+            position: relative;
+            margin-top: 6rem;
+            padding-top: 2rem;
+        }
+
+        .faq-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(139, 92, 246, 0.3),
+                transparent
+            );
+        }
+
+        /* 装饰元素 */
+        .faq-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 50%;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+        }
+
+        /* 装饰图案 */
+        .faq-section .section-divider {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            z-index: 1;
+            opacity: 0.8;
+            background: linear-gradient(45deg, #8B5CF6, #C026D3);
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L9 9H2L7 14L5 21L12 17L19 21L17 14L22 9H15L12 2Z'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L9 9H2L7 14L5 21L12 17L19 21L17 14L22 9H15L12 2Z'/%3E%3C/svg%3E") center/contain no-repeat;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -641,6 +695,65 @@
             
             <div id="alternatives-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Alternatives will be dynamically loaded here -->
+            </div>
+
+            <!-- 修改 FAQ 部分 -->
+            <div class="faq-section mt-16">
+                <div class="section-divider"></div>
+                <h2 class="text-2xl font-semibold mb-8 relative">
+                    Frequently Asked Questions about TikTok Alternatives
+                    <div class="glow absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                </h2>
+                
+                <div class="grid gap-6">
+                    <details class="faq-card rounded-lg">
+                        <summary class="p-6 cursor-pointer text-xl font-semibold">
+                            What makes these TikTok Alternatives worth trying?
+                            <span class="faq-arrow"></span>
+                        </summary>
+                        <div class="faq-content px-6 pb-6">
+                            <p class="leading-relaxed text-gray-400">
+                                TikTok Alternatives offer unique features and communities that might better suit your content creation style. Each platform provides distinct advantages, from Instagram Reels' established audience to YouTube Shorts' superior monetization options. These TikTok Alternatives also offer different content moderation policies and creative tools.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="faq-card rounded-lg">
+                        <summary class="p-6 cursor-pointer text-xl font-semibold">
+                            How do TikTok Alternatives compare in terms of reach and engagement?
+                            <span class="faq-arrow"></span>
+                        </summary>
+                        <div class="faq-content px-6 pb-6">
+                            <p class="leading-relaxed text-gray-400">
+                                While TikTok leads in short-form video engagement, many TikTok Alternatives are rapidly growing their user bases. Platforms like Instagram Reels leverage existing Instagram audiences, while YouTube Shorts benefits from YouTube's massive viewership. Each of these TikTok Alternatives offers unique opportunities to reach new audiences.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="faq-card rounded-lg">
+                        <summary class="p-6 cursor-pointer text-xl font-semibold">
+                            Are these TikTok Alternatives available worldwide?
+                            <span class="faq-arrow"></span>
+                        </summary>
+                        <div class="faq-content px-6 pb-6">
+                            <p class="leading-relaxed text-gray-400">
+                                Most TikTok Alternatives have global availability, though some features may vary by region. Popular TikTok Alternatives like Instagram Reels and YouTube Shorts are accessible worldwide, while platforms like RedNote may have stronger presence in specific regions.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="faq-card rounded-lg">
+                        <summary class="p-6 cursor-pointer text-xl font-semibold">
+                            Which TikTok Alternative is best for monetization?
+                            <span class="faq-arrow"></span>
+                        </summary>
+                        <div class="faq-content px-6 pb-6">
+                            <p class="leading-relaxed text-gray-400">
+                                Each TikTok Alternative offers different monetization options. YouTube Shorts provides access to the YouTube Partner Program, while Instagram Reels offers branded content opportunities and shopping features. When choosing between TikTok Alternatives, consider their monetization policies and requirements.
+                            </p>
+                        </div>
+                    </details>
+                </div>
             </div>
         </div>
     </div>
