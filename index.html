@@ -23,40 +23,430 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
+            background: linear-gradient(120deg, #0a0a0a 0%, #1a1a1a 100%);
+            position: relative;
+            overflow-x: hidden;
+            color: #fff;
         }
+
+        /* 动态背景元素 */
+        .dancing-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .dancing-line {
+            position: absolute;
+            background: linear-gradient(45deg, #8B5CF6 0%, #C026D3 100%);
+            opacity: 0.15;
+            border-radius: 50%;
+            animation: dance 8s infinite ease-in-out;
+        }
+
+        .dancing-line:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: -150px;
+            left: -150px;
+            animation-delay: 0s;
+            background: linear-gradient(45deg, #7C3AED 0%, #C026D3 100%);
+        }
+
+        .dancing-line:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            top: 50%;
+            right: -200px;
+            animation-delay: -2s;
+            background: linear-gradient(45deg, #6D28D9 0%, #9333EA 100%);
+        }
+
+        .dancing-line:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            bottom: -100px;
+            left: 30%;
+            animation-delay: -4s;
+            background: linear-gradient(45deg, #5B21B6 0%, #7C3AED 100%);
+        }
+
+        @keyframes dance {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(50px, 50px) scale(1.1);
+            }
+            50% {
+                transform: translate(0, 100px) scale(0.9);
+            }
+            75% {
+                transform: translate(-50px, 50px) scale(1.2);
+            }
+        }
+
         .app-card {
+            position: relative;
             transition: all 0.3s ease;
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
         }
+
         .app-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.3);
+            background: rgba(35, 35, 35, 0.9);
         }
+
+        .app-card p {
+            color: #9ca3af;
+        }
+
         .tag {
-            background: #f0f0f0;
+            background: linear-gradient(45deg, #8B5CF6 0%, #C026D3 100%);
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.8rem;
-            color: #666;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .try-now-btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .try-now-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .try-now-btn:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1, h2, h3 {
+            color: #fff;
+        }
+
+        h1 span {
+            background: linear-gradient(45deg, #8B5CF6 0%, #C026D3 100%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .intro-card {
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .intro-card p {
+            color: #9ca3af;
+        }
+
+        /* 添加发光效果 */
+        .glow {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* 添加霓虹灯光效果 */
+        .neon-glow {
+            position: relative;
+        }
+
+        .neon-glow::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #8B5CF6, #C026D3, #8B5CF6);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .app-card:hover .neon-glow::before {
+            opacity: 1;
+            animation: borderGlow 1.5s linear infinite;
+        }
+
+        @keyframes borderGlow {
+            0% { filter: blur(5px); }
+            50% { filter: blur(7px); }
+            100% { filter: blur(5px); }
+        }
+
+        /* 折角效果 */
+        .folded-corner {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .folded-corner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            border-style: solid;
+            border-width: 0 50px 50px 0;
+            border-color: transparent rgba(139, 92, 246, 0.3) transparent transparent;
+            transition: all 0.3s ease;
+        }
+
+        .app-card:hover .folded-corner::after {
+            border-color: transparent rgba(139, 92, 246, 0.6) transparent transparent;
+        }
+
+        /* 装饰线条 */
+        .decorative-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
+            height: 1px;
+            width: 100%;
+            left: 0;
+        }
+
+        .decorative-line-top {
+            top: 20px;
+        }
+
+        .decorative-line-bottom {
+            bottom: 20px;
+        }
+
+        /* 鼠标跟随光效 */
+        .light-cursor {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        /* 添加斜线装饰 */
+        .diagonal-line {
+            position: absolute;
+            width: 150%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
+            transform: rotate(-45deg);
+            top: 50%;
+            left: -25%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .app-card:hover .diagonal-line {
+            opacity: 1;
+        }
+
+        /* 添加背景装饰 */
+        .bg-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        /* 背景网格线条 */
+        .grid-lines {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: rotate(-15deg) scale(1.5) translateY(-25%);
+        }
+
+        /* 装饰性角落 */
+        .corner-decoration {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 2px solid rgba(139, 92, 246, 0.1);
+            opacity: 0.5;
+        }
+
+        .corner-decoration::before,
+        .corner-decoration::after {
+            content: '';
+            position: absolute;
+            background: linear-gradient(45deg, #8B5CF6, #C026D3);
+            opacity: 0.2;
+        }
+
+        .corner-decoration::before {
+            width: 20px;
+            height: 2px;
+        }
+
+        .corner-decoration::after {
+            width: 2px;
+            height: 20px;
+        }
+
+        .corner-top-left {
+            top: 20px;
+            left: 20px;
+            border-top: none;
+            border-left: none;
+        }
+
+        .corner-top-right {
+            top: 20px;
+            right: 20px;
+            border-top: none;
+            border-right: none;
+            transform: rotate(90deg);
+        }
+
+        .corner-bottom-left {
+            bottom: 20px;
+            left: 20px;
+            border-bottom: none;
+            border-left: none;
+            transform: rotate(-90deg);
+        }
+
+        .corner-bottom-right {
+            bottom: 20px;
+            right: 20px;
+            border-bottom: none;
+            border-right: none;
+            transform: rotate(180deg);
+        }
+
+        /* 动态光束 */
+        .light-beam {
+            position: absolute;
+            width: 2px;
+            height: 100px;
+            background: linear-gradient(180deg, transparent, rgba(139, 92, 246, 0.2), transparent);
+            animation: moveBeam 8s infinite linear;
+            opacity: 0.3;
+        }
+
+        .light-beam:nth-child(1) { left: 15%; animation-delay: 0s; }
+        .light-beam:nth-child(2) { left: 45%; animation-delay: -2s; }
+        .light-beam:nth-child(3) { left: 75%; animation-delay: -4s; }
+
+        @keyframes moveBeam {
+            0% { transform: translateY(-100%) rotate(15deg); }
+            100% { transform: translateY(100vh) rotate(15deg); }
+        }
+
+        /* 背景渐变叠加 */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, 
+                rgba(10, 10, 10, 0.8) 0%, 
+                rgba(26, 26, 26, 0.95) 100%);
+            z-index: -1;
+        }
+
+        body {
+            background: #0a0a0a;
         }
     </style>
 </head>
 <body class="bg-gray-50">
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
-        <h1 class="text-4xl md:text-5xl font-bold text-center mb-8 text-gray-800">
-            Top TikTok Alternatives for Content Creators
-        </h1>
-        
-        <div class="bg-white rounded-lg p-6 mb-8 shadow-md">
-            <h2 class="text-2xl font-semibold mb-4">Why Consider TikTok Alternatives?</h2>
-            <p class="text-gray-600 leading-relaxed">
-                Exploring alternative platforms to TikTok can provide diverse opportunities for content creators and viewers alike. Whether you're looking for different features, communities, or creative tools, these alternatives offer unique experiences.
-            </p>
-        </div>
+    <!-- 添加鼠标跟随光效 -->
+    <div class="light-cursor"></div>
 
-        <h2 class="text-2xl font-semibold mb-6">Popular Alternatives</h2>
-        
-        <div id="alternatives-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Alternatives will be dynamically loaded here -->
+    <!-- 添加动态背景 -->
+    <div class="dancing-bg">
+        <div class="dancing-line"></div>
+        <div class="dancing-line"></div>
+        <div class="dancing-line"></div>
+    </div>
+
+    <!-- 在 body 开始处添加背景装饰 -->
+    <div class="bg-decoration">
+        <div class="grid-lines"></div>
+        <div class="light-beam"></div>
+        <div class="light-beam"></div>
+        <div class="light-beam"></div>
+        <div class="corner-decoration corner-top-left"></div>
+        <div class="corner-decoration corner-top-right"></div>
+        <div class="corner-decoration corner-bottom-left"></div>
+        <div class="corner-decoration corner-bottom-right"></div>
+    </div>
+    <div class="bg-overlay"></div>
+
+    <div class="content-wrapper">
+        <div class="container mx-auto px-4 py-8 max-w-4xl">
+            <h1 class="text-4xl md:text-5xl font-bold text-center mb-8 relative">
+                Top TikTok Alternatives
+                <span class="block text-2xl md:text-3xl mt-2">
+                    for Content Creators
+                </span>
+                <div class="glow absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+            </h1>
+            
+            <div class="intro-card rounded-lg p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-4">Why Consider TikTok Alternatives?</h2>
+                <p class="leading-relaxed">
+                    Exploring alternative platforms to TikTok can provide diverse opportunities for content creators and viewers alike. Whether you're looking for different features, communities, or creative tools, these alternatives offer unique experiences.
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold mb-6">Popular Alternatives</h2>
+            
+            <div id="alternatives-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Alternatives will be dynamically loaded here -->
+            </div>
         </div>
     </div>
 
@@ -70,7 +460,9 @@
                 
                 data.alternatives.forEach(app => {
                     const card = `
-                        <div class="app-card bg-white rounded-lg p-6 shadow-sm">
+                        <div class="app-card rounded-lg p-6 shadow-sm folded-corner neon-glow">
+                            <div class="decorative-line decorative-line-top"></div>
+                            <div class="diagonal-line"></div>
                             <div class="flex items-center mb-4">
                                 <img src="${app.ico}" alt="${app.name}" class="w-12 h-12 rounded-lg mr-4">
                                 <div>
@@ -80,12 +472,39 @@
                             </div>
                             <p class="text-gray-600 mb-4">${app.description}</p>
                             <a href="${app.url}" target="_blank" 
-                               class="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                               class="try-now-btn inline-block">
                                 Try Now
                             </a>
+                            <div class="decorative-line decorative-line-bottom"></div>
                         </div>
                     `;
                     alternativesList.append(card);
+                });
+
+                // 添加鼠标跟随效果
+                $(document).mousemove(function(e) {
+                    $('.light-cursor').css({
+                        left: e.pageX,
+                        top: e.pageY,
+                        opacity: 1
+                    });
+                });
+
+                // 优化性能：添加防抖
+                let timeout;
+                $(document).mousemove(function(e) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function() {
+                        $('.light-cursor').css({
+                            left: e.pageX,
+                            top: e.pageY,
+                            opacity: 1
+                        });
+                    }, 10);
+                });
+
+                $(document).mouseleave(function() {
+                    $('.light-cursor').css('opacity', 0);
                 });
             });
         });
