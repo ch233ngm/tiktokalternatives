@@ -1,0 +1,25 @@
+{
+  "alternatives": [
+    {
+      "name": "Instagram Reels",
+      "url": "https://www.instagram.com/reels/",
+      "tag": "Social Media Giant",
+      "description": "Instagram's direct response to TikTok, offering similar short-form vertical videos with music, effects, and creative tools.",
+      "ico": "/public/icos/instagram.png"
+    },
+    {
+      "name": "YouTube Shorts",
+      "url": "https://www.youtube.com/shorts/",
+      "tag": "Video Platform",
+      "description": "YouTube's short-form video feature that allows creators to record, edit and share vertical videos up to 60 seconds.",
+      "ico": "/public/icos/youtube.png"
+    },
+    {
+      "name": "Triller",
+      "url": "https://www.triller.co/",
+      "tag": "Music Focus",
+      "description": "AI-powered music video app that automatically edits videos to the beat of songs.",
+      "ico": "/public/icos/triller.png"
+    }
+  ]
+}
