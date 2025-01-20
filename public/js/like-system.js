@@ -1,20 +1,25 @@
 class LikeSystem {
     constructor() {
+        this.apiBaseUrl = 'https://app-likes.ch233ngm.workers.dev';
         this.likeStates = new Map();
         this.initializeLikes();
     }
 
     // 初始化点赞数据
     async initializeLikes() {
-        // TODO: 从API获取点赞数据
-        // 临时使用本地数据
-        const mockData = {
-            'Instagram Reels': 1234,
-            'YouTube Shorts': 2345,
-            'Triller': 876
-        };
-
-        this.likeStates = new Map(Object.entries(mockData));
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/api/likes`);
+            const data = await response.json();
+            
+            this.likeStates = new Map(
+                data.map(item => [item.name, item.likes])
+            );
+            
+            return true;
+        } catch (error) {
+            console.error('Error initializing likes:', error);
+            return false;
+        }
     }
 
     // 获取点赞数
@@ -24,30 +29,27 @@ class LikeSystem {
 
     // 点赞动作
     async toggleLike(appName, likeButton) {
-        // 防止重复点击
-        if (likeButton.classList.contains('liking')) return;
+        if (likeButton.classList.contains('liking')) {
+            return;
+        }
 
-        // 添加点击动画
         likeButton.classList.add('liking');
 
         try {
-            // TODO: 调用API进行点赞/取消点赞
-            // 临时模拟API调用
-            await new Promise(resolve => setTimeout(resolve, 300));
+            const response = await fetch(`${this.apiBaseUrl}/api/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ appName }),
+            });
 
-            const currentLikes = this.getLikes(appName);
-            const isLiked = likeButton.classList.contains('liked');
+            const data = await response.json();
+            this.likeStates.set(appName, data.likes);
 
-            if (isLiked) {
-                this.likeStates.set(appName, currentLikes - 1);
-                likeButton.classList.remove('liked');
-            } else {
-                this.likeStates.set(appName, currentLikes + 1);
-                likeButton.classList.add('liked');
-                this.createLikeEffect(likeButton);
-            }
+            likeButton.classList.add('liked');
+            this.createLikeEffect(likeButton);
 
-            // 更新显示的数字
             const likeCount = likeButton.querySelector('.like-count');
             likeCount.textContent = this.formatLikeCount(this.getLikes(appName));
 
