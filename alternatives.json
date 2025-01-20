@@ -27,6 +27,13 @@
       "description": "Lifestyle sharing platform with unique note-style format, popular for fashion and creative content.",
       "url": "https://www.xiaohongshu.com/explore",
       "ico": "/public/icos/rednote.png"
+    },
+    {
+      "name": "Lemon8",
+      "url": "https://www.lemon8-app.com/en-US",
+      "tag": "Lifestyle & Photos",
+      "description": "Photo-focused lifestyle platform featuring curated content for fashion, food and travel with high-quality visual storytelling.",
+      "ico": "/public/icos/lemon8.png"
     }
   ]
 }
